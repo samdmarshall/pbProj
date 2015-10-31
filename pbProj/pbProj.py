@@ -82,5 +82,5 @@ class PBXProj(object):
         """
         targets = list()
         if self.isValid():
-            targets.extend(self.rootObject.targets)
+            targets.extend(self.pbxRootObject[kPBX_PROJECT_targets])
         return targets
