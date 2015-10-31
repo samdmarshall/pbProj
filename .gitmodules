@@ -1,0 +1,3 @@
+[submodule "pbPlist"]
+	path = pbPlist
+	url = git@github.com:samdmarshall/pbPlist.git
