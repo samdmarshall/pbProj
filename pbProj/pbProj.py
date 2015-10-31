@@ -2,14 +2,10 @@ from __future__ import absolute_import
 from .pbPlist.pbPlist import PBPlist
 from .PBX_Constants import *
 from .PBX_Lookup import *
-import os
 
 class PBXProj(object):
     
     def __init__(self, file_path):
-        if file_path.endswith('.xcodeproj') or file_path.endswith('.pbproj'):
-            file_path = os.path.join(file_path, 'project.pbxproj')
-        
         plist = PBPlist(file_path)
         
         contents = plist.root.nativeType()
