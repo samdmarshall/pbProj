@@ -93,3 +93,12 @@ class PBX_Base_Reference(PBXItem):
         super(PBX_Base_Reference, self).__init__(identifier, dictionary)
     def resolveGraph(self, project):
         super(PBX_Base_Reference, self).resolveGraph(project)
+    def findParent(self, project):
+        parent = None
+        results = filter(lambda pbxref: isinstance(pbxref, PBX_Base_Reference) and kPBX_REFERENCE_children in pbxref.keys(), project.pbxObjects)
+        for item in results:
+            child_results = filter(lambda ref: self.identifier == ref.identifier, item[kPBX_REFERENCE_children])
+            if len(child_results) > 0:
+                parent = item
+                break
+        return parent

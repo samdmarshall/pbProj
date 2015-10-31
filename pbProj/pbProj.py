@@ -2,10 +2,14 @@ from __future__ import absolute_import
 from .pbPlist.pbPlist import PBPlist
 from .PBX_Constants import *
 from .PBX_Lookup import *
+import os
 
 class PBXProj(object):
     
     def __init__(self, file_path):
+        if file_path.endswith('.xcodeproj') or file_path.endswith('.pbproj'):
+            file_path = os.path.join(file_path, 'project.pbxproj')
+        
         plist = PBPlist(file_path)
         
         contents = plist.root.nativeType()
@@ -25,12 +29,12 @@ class PBXProj(object):
             # get the archive version number
             archive_version = contents.get(kPBX_archiveVersion, None)
             if archive_version:
-                self.pbxArchiveVersion = int(str(archive_version))
+                self.pbxArchiveVersion = int(archive_version)
             
             # get the object version number
             object_version = contents.get(kPBX_objectVersion, None)
             if object_version:
-                self.pbxObjectVersion = int(str(object_version))
+                self.pbxObjectVersion = int(object_version)
             
             # get the classes
             self.pbxClasses = contents.get(kPBX_classes, None)
@@ -49,9 +53,9 @@ class PBXProj(object):
             
     def __repr__(self):
         if self.isValid():
-            return '<%s : %s : %s>' % (type(self), self.pbxFilePath, self.pbxIdentifier)
+            return '<%s : %s : %s>' % (self.__class__.__name__, self.pbxIdentifier,  self.pbxFilePath)
         else:
-            return '<%s : INVALID OBJECT>' % (type(self))
+            return '<%s : INVALID OBJECT>' % (self.__class__.__name__)
     
     def __attrs(self):
         return (self.pbxIdentifier, self.pbxFilePath)
@@ -75,6 +79,30 @@ class PBXProj(object):
             if len(filter_results) > 0:
                 result = filter_results[0]
         return result
+    
+    def projects(self):
+        """
+        This method returns a set of 'xcodeproj' objects that represents any referenced 
+        xcodeproj files in this project.
+        """
+        subprojects = set();
+        if self.isValid():
+            for path in self.__subproject_paths():
+                subprojects.add(path)
+        return subprojects;
+        
+    
+    def __subproject_paths(self):
+        """
+        This method is for returning a list of paths to referenced project files in this
+        xcodeproj file.
+        """
+        paths = list()
+        if self.isValid():
+            for project_dict in self.pbxRootObject[kPBX_PROJECT_projectReferences]:
+                project_ref = project_dict[kPBX_PROJECTREF_ProjectRef]
+                paths.append(project_ref)
+        return paths;
     
     def targets(self):
         """
