@@ -1,3 +1,3 @@
-[submodule "pbPlist"]
-	path = pbPlist
+[submodule "pbProj/pbPlist"]
+	path = pbProj/pbPlist
 	url = git@github.com:samdmarshall/pbPlist.git
