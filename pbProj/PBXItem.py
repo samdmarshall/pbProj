@@ -9,6 +9,7 @@ class PBXItem(collections.MutableMapping):
         self.store = dict()
         self.key_storage = set()
         self.update(dictionary)  # use the free update to set keys
+        self.isResolved = False
     
     def __getitem__(self, key):
         return self.store[key]
@@ -46,7 +47,7 @@ class PBXItem(collections.MutableMapping):
     
     def getGraphNodeWithIdentifier(self, identifier, project):
         found_object = project.objectForIdentifier(identifier)
-        if found_object:
+        if found_object and found_object.isResolved == False:
             found_object.resolveGraph(project)
         return found_object
     
@@ -69,7 +70,7 @@ class PBXItem(collections.MutableMapping):
         self[key] = resolved_array
     
     def resolveGraph(self, project):
-        return
+        self.isResolved = True
 
 class PBX_Base_Target(PBXItem):
     def __init__(self, identifier, dictionary):
