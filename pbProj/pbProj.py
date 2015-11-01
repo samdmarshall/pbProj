@@ -1,12 +1,15 @@
-from __future__ import absolute_import
-from .pbPlist.pbPlist import PBPlist
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pbPlist'))
+import pbPlist
+
 from .PBX_Constants import *
 from .PBX_Lookup import *
 
 class PBXProj(object):
     
     def __init__(self, file_path):
-        plist = PBPlist(file_path)
+        plist = pbPlist.PBPlist(file_path)
         
         contents = plist.root.nativeType()
         
