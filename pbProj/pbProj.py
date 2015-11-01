@@ -95,9 +95,11 @@ class PBXProj(object):
         """
         paths = list()
         if self.isValid():
-            for project_dict in self.pbxRootObject[kPBX_PROJECT_projectReferences]:
-                project_ref = project_dict[kPBX_PROJECTREF_ProjectRef]
-                paths.append(project_ref)
+            project_references = self.pbxRootObject.get(kPBX_PROJECT_projectReferences, None)
+            if project_references:
+                for project_dict in project_references:
+                    project_ref = project_dict[kPBX_PROJECTREF_ProjectRef]
+                    paths.append(project_ref)
         return paths;
     
     def targets(self):
@@ -106,5 +108,7 @@ class PBXProj(object):
         """
         targets = list()
         if self.isValid():
-            targets.extend(self.pbxRootObject[kPBX_PROJECT_targets])
+            target_list = self.pbxRootObject.get(kPBX_PROJECT_targets, None)
+            if target_list:
+                targets.extend(target_list)
         return targets
