@@ -19,9 +19,11 @@ class PBXProject(PBXItem):
         self.resolveGraphNodeForKey(kPBX_PROJECT_mainGroup, project)
         self.resolveGraphNodeForKey(kPBX_PROJECT_productRefGroup, project)
         self.resolveGraphNodesForArray(kPBX_PROJECT_targets, project)
-        resolved_references = list()
-        for reference in self[kPBX_PROJECT_projectReferences]:
-            project_reference = PBXProject_ProjectReference(None, reference)
-            project_reference.resolveGraph(project)
-            resolved_references.append(project_reference)
-        self[kPBX_PROJECT_projectReferences] = resolved_references
+        project_references = self.get(kPBX_PROJECT_projectReferences, None)
+        if project_references:
+            resolved_references = list()
+            for reference in project_references:
+                project_reference = PBXProject_ProjectReference(None, reference)
+                project_reference.resolveGraph(project)
+                resolved_references.append(project_reference)
+            self[kPBX_PROJECT_projectReferences] = resolved_references
