@@ -94,6 +94,27 @@ class PBX_Base_Reference(PBXItem):
         super(PBX_Base_Reference, self).__init__(identifier, dictionary)
     def resolveGraph(self, project):
         super(PBX_Base_Reference, self).resolveGraph(project)
+    def fsPath(self, project):
+        fs_path = self.get(kPBX_REFERENCE_path, '')
+        source_tree_type = self.get(kPBX_REFERENCE_sourceTree, None)
+        if source_tree_type:
+            if source_tree_type == kPBX_REFERENCE_sourceTree_Absolute:
+                fs_path = os.path.expanduser(fs_path)
+            elif source_tree_type in [kPBX_REFERENCE_sourceTree_DeveloperDir, kPBX_REFERENCE_sourceTree_BuiltProducts, kPBX_REFERENCE_sourceTree_SDKRoot, kPBX_REFERENCE_sourceTree_SourceRoot]:
+                fs_path = '${'+source_tree_type+'}'+'/'+fs_path
+            elif source_tree_type == kPBX_REFERENCE_sourceTree_Group:
+                parent = self.findParent(project)
+                if parent:
+                    print parent
+                    parent_path = parent.fsPath(project)
+                    fs_path = parent_path+'/'+fs_path
+                else:
+                    if self == project.pbxRootObject[kPBX_PROJECT_mainGroup]:
+                        fs_path = '${PROJECT_DIR}'
+                    else:
+                        print('Detached Group, cannot resolve FS path!')
+                        raise Exception
+        return fs_path
     def findParent(self, project):
         parent = None
         results = filter(lambda pbxref: isinstance(pbxref, PBX_Base_Reference) and kPBX_REFERENCE_children in pbxref.keys(), project.pbxObjects)
