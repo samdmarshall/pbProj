@@ -7,6 +7,7 @@ kPBX_classes = 'classes'
 kPBX_ProjectRef = 'ProjectRef'
 
 kPBX_isa = 'isa'
+kPBX_isaFallback = 'isaFallback'
 
 kPBX_TARGET_name = 'name'
 kPBX_TARGET_productName = 'productName'

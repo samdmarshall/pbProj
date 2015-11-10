@@ -4,7 +4,7 @@ from .PBX_Constants import *
 
 class PBXItem(collections.MutableMapping):
     def __init__(self, identifier, dictionary):
-        self.isa = dictionary.get(kPBX_isa, None)
+        self.isa = dictionary.get(kPBX_isa, dictionary.get(kPBX_isaFallback, None))
         self.identifier = identifier
         self.store = dict()
         self.key_storage = set()

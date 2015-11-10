@@ -78,7 +78,7 @@ PBX_TYPE_TABLE = {
 
 def PBX_Type_Resolver(identifier, dictionary):
     global PBX_TYPE_TABLE
-    object_type = dictionary.get(kPBX_isa, None)
+    object_type = dictionary.get(kPBX_isa, dictionary.get(kPBX_isaFallback, None))
     if object_type:
         return PBX_TYPE_TABLE.get(object_type, PBXItem)(identifier, dictionary)
     else:
