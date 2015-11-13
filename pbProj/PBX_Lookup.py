@@ -8,6 +8,7 @@ from .PBXApplicationReference import *
 from .PBXApplicationTarget import *
 from .PBXBuildFile import *
 from .PBXBuildRule import *
+from .PBXBuildStyle import *
 from .PBXBundleReference import *
 from .PBXBundleTarget import *
 from .PBXContainerItemProxy import *
@@ -45,6 +46,7 @@ PBX_TYPE_TABLE = {
     'PBXApplicationTarget': PBXApplicationTarget,
     'PBXBuildFile': PBXBuildFile,
     'PBXBuildRule': PBXBuildRule,
+    'PBXBuildStyle': PBXBuildStyle,
     'PBXBundleReference': PBXBundleReference,
     'PBXBundleTarget': PBXBundleTarget,
     'PBXContainerItemProxy': PBXContainerItemProxy,
@@ -74,6 +76,7 @@ PBX_TYPE_TABLE = {
     'PBXZipArchiveReference': PBXZipArchiveReference,
     'XCBuildConfiguration': XCBuildConfiguration,
     'XCConfigurationList': XCConfigurationList,
+    'XCVersionGroup': XCVersionGroup,
 }
 
 def PBX_Type_Resolver(identifier, dictionary):
